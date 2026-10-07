@@ -1232,7 +1232,6 @@
       "blocks": {
         "static-header": {
           "type": "_product-list-content",
-          "disabled": true,
           "static": true,
           "settings": {
             "content_direction": "column",
@@ -1264,29 +1263,25 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_kAbi8A": {
-              "type": "text",
-              "name": "t:names.text",
+            "custom_section_title_jdxE8h": {
+              "type": "custom-section-title",
+              "name": "Titre de section",
               "settings": {
-                "text": "<p>SHOP BY</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h6",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
+                "text": "Nos best sellers",
+                "heading_tag": "h2",
+                "type_preset": "h2",
+                "font": "var(--font-heading--family)",
+                "font_size": 40,
+                "line_height": 110,
+                "letter_spacing": 0,
                 "case": "none",
-                "wrap": "pretty",
+                "alignment": "left",
                 "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "line_position": "after",
+                "line_length": 96,
+                "gap": 28,
+                "line_color": "",
+                "line_opacity": 70
               },
               "blocks": {}
             },
@@ -1294,10 +1289,10 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h3><em>les meilleures ventes</em></h3>",
+                "text": "",
                 "width": "100%",
                 "max_width": "normal",
-                "alignment": "center",
+                "alignment": "left",
                 "type_preset": "h2",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
@@ -1318,7 +1313,7 @@
             }
           },
           "block_order": [
-            "text_kAbi8A",
+            "custom_section_title_jdxE8h",
             "text_PbfxNz"
           ]
         },
@@ -2265,8 +2260,8 @@
     "section_9gHe7m",
     "collection_list_QQkz4x",
     "media_with_content_zfKQ6d",
-    "section",
     "product_list_YidTcf",
+    "section",
     "section_feFqyj",
     "collection_list_DRXAiR",
     "section_cb4dKj"
