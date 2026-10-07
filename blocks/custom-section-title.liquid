@@ -23,7 +23,18 @@
     "
     {{ block.shopify_attributes }}
   >
-    <{{ heading_tag }} class="custom-section-title__text {{ block.settings.type_preset }}">
+    <{{ heading_tag }}
+      class="custom-section-title__text {% if block.settings.type_preset != 'custom' %}{{ block.settings.type_preset }}{% else %}custom-section-title__text--custom{% endif %}"
+      {% if block.settings.type_preset == 'custom' %}
+        style="
+          --section-title-font: {{ block.settings.font }};
+          --section-title-size: {{ block.settings.font_size }}px;
+          --section-title-line-height: {{ block.settings.line_height | divided_by: 100.0 }};
+          --section-title-tracking: {{ block.settings.letter_spacing | divided_by: 100.0 }}em;
+          --section-title-case: {{ block.settings.case }};
+        "
+      {% endif %}
+    >
       {{- block.settings.text | escape -}}
     </{{ heading_tag }}>
     {%- if line_position == 'after' -%}
@@ -53,6 +64,15 @@
     margin: 0;
     min-width: 0;
     text-wrap: balance;
+  }
+
+  .custom-section-title__text--custom {
+    font-family: var(--section-title-font);
+    font-size: var(--section-title-size);
+    font-weight: normal;
+    line-height: var(--section-title-line-height);
+    letter-spacing: var(--section-title-tracking);
+    text-transform: var(--section-title-case);
   }
 
   .custom-section-title__line {
@@ -100,14 +120,73 @@
       "type": "select",
       "id": "type_preset",
       "label": "Taille du titre",
-      "info": "Reprend les styles de titres définis dans la typographie du thème.",
+      "info": "Les styles H1 à H4 reprennent la typographie du thème. « Personnalisé » permet de choisir police, taille et casse.",
       "options": [
         { "value": "h1", "label": "Très grand (style H1)" },
         { "value": "h2", "label": "Grand (style H2)" },
         { "value": "h3", "label": "Moyen (style H3)" },
-        { "value": "h4", "label": "Petit (style H4)" }
+        { "value": "h4", "label": "Petit (style H4)" },
+        { "value": "custom", "label": "Personnalisé" }
       ],
       "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Police",
+      "info": "Polices définies dans les réglages de typographie du thème.",
+      "options": [
+        { "value": "var(--font-heading--family)", "label": "Titres" },
+        { "value": "var(--font-body--family)", "label": "Texte" },
+        { "value": "var(--font-subheading--family)", "label": "Sous-titres" },
+        { "value": "var(--font-accent--family)", "label": "Accent" }
+      ],
+      "default": "var(--font-heading--family)",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Taille",
+      "min": 16,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 40,
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Interligne",
+      "min": 90,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 110,
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Espacement des lettres",
+      "min": -5,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "default": 0,
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "Casse",
+      "options": [
+        { "value": "none", "label": "Normale" },
+        { "value": "uppercase", "label": "Majuscules" }
+      ],
+      "default": "none",
+      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
     },
     {
       "type": "select",
