@@ -961,7 +961,7 @@
           "static": true,
           "settings": {
             "media_type": "image",
-            "image": "shopify://shop_images/hf_20260916_211512_71ff8f9e-065a-420a-bc03-d15f778f778f.png",
+            "image": "shopify://shop_images/hf_20260916_205207_11fe8d54-1c2b-45ca-a0ef-56548347106c.png",
             "link": "",
             "video_loop": true,
             "video_autoplay": false,
@@ -987,7 +987,7 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h6",
+                "type_preset": "h5",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
