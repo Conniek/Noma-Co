@@ -54,7 +54,21 @@
 ## Traductions
 - Tout texte d'interface fixe (hors réglages) passe par les fichiers `locales/` : `{{ 'sections.custom_hero.cta' | t }}`.
 
+## Synchronisation avec l'éditeur de thème (priorité absolue)
+L'éditeur de thème écrit dans les fichiers JSON du thème en ligne (`templates/*.json`, `sections/*.json`, `config/settings_data.json`). Si `shopify theme dev` est lancé sans synchronisation, les fichiers locaux écrasent ce travail.
+
+- **Avant toute modification** (création, édition ou suppression de fichier, y compris `custom-*`), **demander à l'utilisateur** :
+  1. s'il a modifié le paramétrage ou le contenu dans l'éditeur de thème depuis la dernière sauvegarde ;
+  2. s'il veut le sauvegarder avant que je commence.
+  Ne rien modifier tant qu'il n'a pas répondu.
+- **Avant de modifier un `templates/*.json`, un `sections/*.json` ou `config/settings_data.json`** : demander un `shopify theme pull` ciblé (`--only` sur ces fichiers) pour partir de la version de l'éditeur. Ne jamais réécrire ces fichiers à partir d'une version locale potentiellement périmée.
+- **Sauvegarde** : proposer un commit git après chaque session d'éditeur, avant de modifier quoi que ce soit.
+- **Serveur de dev** : toujours rappeler de lancer `shopify theme dev --theme-editor-sync`, jamais sans l'option.
+- **Conflits** : si le terminal propose « local » ou « remote », choisir **remote** (garde le travail fait dans l'éditeur).
+- Quand un seul sens de travail est possible à la fois : soit l'utilisateur travaille dans l'éditeur, soit je modifie les fichiers, pas les deux en parallèle.
+
 ## Méthode
+0. Poser les questions de synchronisation ci-dessus avant toute modification.
 1. Annoncer en 2-3 lignes ce qui va être créé (fichiers, réglages principaux).
 2. Produire les fichiers complets, prêts à l'emploi.
 3. Indiquer comment ajouter la section dans l'éditeur et quoi vérifier dans la preview (`shopify theme dev`).
