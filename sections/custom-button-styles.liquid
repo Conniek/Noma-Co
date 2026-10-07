@@ -1,0 +1,61 @@
+{% comment %}
+  Section contract.
+  Style global (aucun rendu visuel) : applique aux boutons une typographie propre
+  (taille, graisse, espacement des lettres), distincte de celle des paragraphes.
+  La famille de police et la casse restent pilotées par les réglages du thème
+  (Typographie > Boutons). À ajouter dans le groupe de section « Pied de page »
+  pour s'appliquer sur tout le site.
+  @example
+  Éditeur de thème > Pied de page > Ajouter une section > « Style des boutons »
+{% endcomment %}
+
+<div hidden data-custom-button-styles></div>
+
+{% stylesheet %}
+  html {
+    --custom-button-font-size: 0.8125rem;
+    --custom-button-font-weight: 400;
+    --custom-button-letter-spacing: 0.1em;
+    --custom-button-line-height: 1.2;
+    --custom-button-gap: 1rem;
+  }
+
+  html .button,
+  html .button-secondary,
+  html .button-custom,
+  html button.shopify-payment-button__button--unbranded {
+    font-size: var(--custom-button-font-size);
+    font-weight: var(--custom-button-font-weight);
+    letter-spacing: var(--custom-button-letter-spacing);
+    line-height: var(--custom-button-line-height);
+  }
+
+  /* Bouton avec icône (flèche) : texte et icône sur une ligne, bien espacés */
+  html .button:has(svg),
+  html .button-secondary:has(svg),
+  html .button-custom:has(svg) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--custom-button-gap);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Style des boutons",
+  "tag": "div",
+  "class": "custom-button-styles",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Section sans affichage : elle applique la typographie des boutons (taille, graisse, espacement des lettres) sur tout le site. Ajoutez-la une seule fois dans le pied de page."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Style des boutons"
+    }
+  ]
+}
+{% endschema %}

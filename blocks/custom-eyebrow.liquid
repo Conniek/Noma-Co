@@ -1,0 +1,174 @@
+{%- comment -%}
+  Bloc : Eyebrow (trait + texte en capitales espacées)
+  Usages : hero, bloc inspiration, bandeau inspiration produit,
+  texte empilé décoratif (sans trait).
+{%- endcomment -%}
+
+{%- liquid
+  assign line_position = block.settings.line_position
+-%}
+
+<div
+  class="custom-eyebrow custom-eyebrow--line-{{ line_position }} custom-eyebrow--align-{{ block.settings.alignment }}"
+  style="--eyebrow-line-width: {{ block.settings.line_width }}px; --eyebrow-gap: {{ block.settings.gap }}px; --eyebrow-font-size: {{ block.settings.font_size }}px; --eyebrow-letter-spacing: {{ block.settings.letter_spacing }};"
+  {% if block.settings.decorative %}aria-hidden="true"{% endif %}
+  {{ block.shopify_attributes }}
+>
+  {%- if line_position != 'none' -%}
+    <span class="custom-eyebrow__line" aria-hidden="true"></span>
+  {%- endif -%}
+
+  {%- if block.settings.text != blank -%}
+    <p class="custom-eyebrow__text">{{ block.settings.text | escape | newline_to_br }}</p>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .custom-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--eyebrow-gap);
+    color: inherit;
+  }
+
+  .custom-eyebrow--line-after {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  .custom-eyebrow--align-center {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .custom-eyebrow--align-right {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .custom-eyebrow__line {
+    flex: 0 0 var(--eyebrow-line-width);
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.6;
+  }
+
+  .custom-eyebrow__text {
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--eyebrow-font-size);
+    font-weight: 400;
+    line-height: 1.8;
+    text-transform: uppercase;
+    letter-spacing: calc(var(--eyebrow-letter-spacing) * 0.01em);
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-eyebrow {
+      gap: calc(var(--eyebrow-gap) * 0.66);
+    }
+
+    .custom-eyebrow__line {
+      flex-basis: calc(var(--eyebrow-line-width) * 0.66);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Eyebrow",
+  "tag": null,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte",
+      "info": "Un retour à la ligne crée une nouvelle ligne. Le texte s'affiche en capitales.",
+      "default": "L'art\npour tous les intérieurs"
+    },
+    {
+      "type": "select",
+      "id": "line_position",
+      "label": "Trait",
+      "options": [
+        { "value": "before", "label": "Avant le texte" },
+        { "value": "after", "label": "Après le texte" },
+        { "value": "none", "label": "Aucun trait" }
+      ],
+      "default": "before"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignement",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "line_width",
+      "label": "Longueur du trait",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espace entre le trait et le texte",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Taille du texte",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Espacement des lettres",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "decorative",
+      "label": "Texte purement décoratif",
+      "info": "À cocher si le texte n'apporte pas d'information (il sera ignoré par les lecteurs d'écran).",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Eyebrow (trait + texte)"
+    },
+    {
+      "name": "Texte empilé décoratif",
+      "settings": {
+        "text": "Des\nhorizons\nà portée\nde murs",
+        "line_position": "none",
+        "letter_spacing": 24,
+        "decorative": true
+      }
+    }
+  ]
+}
+{% endschema %}

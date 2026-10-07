@@ -1,0 +1,191 @@
+{% doc %}
+  Titre de section suivi d'un trait fin.
+  La typographie vient des styles de titres du thème (h1 à h6), le trait prend la couleur du texte.
+
+  @example
+  Ajouter ce bloc dans l'en-tête d'une section (liste de collections, groupe…).
+{% enddoc %}
+
+{%- liquid
+  assign heading_tag = block.settings.heading_tag
+  assign line_position = block.settings.line_position
+-%}
+
+{%- if block.settings.text != blank -%}
+  <div
+    class="custom-section-title custom-section-title--{{ block.settings.alignment }}{% if block.settings.line_length == 0 %} custom-section-title--fill{% endif %}"
+    style="
+      --section-title-gap: {{ block.settings.gap }}px;
+      --section-title-line-length: {{ block.settings.line_length }}px;
+      --section-title-line-opacity: {{ block.settings.line_opacity | divided_by: 100.0 }};
+      {% if block.settings.text_color != blank %}color: {{ block.settings.text_color }};{% endif %}
+      {% if block.settings.line_color != blank %}--section-title-line-color: {{ block.settings.line_color }};{% endif %}
+    "
+    {{ block.shopify_attributes }}
+  >
+    <{{ heading_tag }} class="custom-section-title__text {{ block.settings.type_preset }}">
+      {{- block.settings.text | escape -}}
+    </{{ heading_tag }}>
+    {%- if line_position == 'after' -%}
+      <span class="custom-section-title__line" aria-hidden="true"></span>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .custom-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--section-title-gap);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .custom-section-title--center {
+    justify-content: center;
+  }
+
+  .custom-section-title--right {
+    justify-content: flex-end;
+  }
+
+  .custom-section-title__text {
+    margin: 0;
+    min-width: 0;
+    text-wrap: balance;
+  }
+
+  .custom-section-title__line {
+    flex: 0 0 var(--section-title-line-length);
+    height: 1px;
+    background-color: var(--section-title-line-color, currentColor);
+    opacity: var(--section-title-line-opacity);
+  }
+
+  .custom-section-title--fill .custom-section-title__line {
+    flex: 1 1 auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-section-title:not(.custom-section-title--fill) .custom-section-title__line {
+      flex-basis: calc(var(--section-title-line-length) * 0.6);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Titre de section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Titre",
+      "default": "Nos univers"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Balise HTML",
+      "info": "Pour l'accessibilité : un seul H1 par page, les titres de section sont en général des H2.",
+      "options": [
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "Taille du titre",
+      "info": "Reprend les styles de titres définis dans la typographie du thème.",
+      "options": [
+        { "value": "h1", "label": "Très grand (style H1)" },
+        { "value": "h2", "label": "Grand (style H2)" },
+        { "value": "h3", "label": "Moyen (style H3)" },
+        { "value": "h4", "label": "Petit (style H4)" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignement",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du titre",
+      "info": "Laisser vide pour utiliser la couleur du thème."
+    },
+    {
+      "type": "header",
+      "content": "Trait"
+    },
+    {
+      "type": "select",
+      "id": "line_position",
+      "label": "Trait",
+      "options": [
+        { "value": "after", "label": "Après le titre" },
+        { "value": "none", "label": "Aucun trait" }
+      ],
+      "default": "after"
+    },
+    {
+      "type": "range",
+      "id": "line_length",
+      "label": "Longueur du trait",
+      "info": "0 = le trait remplit l'espace disponible.",
+      "min": 0,
+      "max": 240,
+      "step": 8,
+      "unit": "px",
+      "default": 96,
+      "visible_if": "{{ block.settings.line_position == 'after' }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espace entre le titre et le trait",
+      "min": 8,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "default": 28,
+      "visible_if": "{{ block.settings.line_position == 'after' }}"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Couleur du trait",
+      "info": "Laisser vide pour reprendre la couleur du titre.",
+      "visible_if": "{{ block.settings.line_position == 'after' }}"
+    },
+    {
+      "type": "range",
+      "id": "line_opacity",
+      "label": "Opacité du trait",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "default": 70,
+      "visible_if": "{{ block.settings.line_position == 'after' }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Titre de section"
+    }
+  ]
+}
+{% endschema %}
